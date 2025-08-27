@@ -66,6 +66,7 @@ export default class Level {
 
             count += this.toggleRect(x, y, w, h, this.topGrid)
         }
+        this.lastCount = count
     }
 
 

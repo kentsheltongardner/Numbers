@@ -53,6 +53,7 @@ export default class Level {
             const y = Math.ceil(Math.random() * (Level.GridSize - h));
             count += this.toggleRect(x, y, w, h, this.topGrid);
         }
+        this.lastCount = count;
     }
     count(grid) {
         let count = 0;
