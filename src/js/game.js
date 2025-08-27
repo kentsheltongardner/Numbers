@@ -21,6 +21,7 @@ export default class Game {
     gridY = 0;
     move = false;
     previousTime = 0;
+    musicPlaying = false;
     constructor() {
         this.resize();
         window.addEventListener('resize', () => this.resize());
@@ -28,7 +29,6 @@ export default class Game {
         this.canvas.addEventListener('mousemove', e => this.mouseMove(e));
         this.canvas.addEventListener('mouseup', e => this.mouseUp(e));
         this.canvas.addEventListener('contextmenu', e => e.preventDefault());
-        this.level.buildTopGrid(1);
         requestAnimationFrame(time => this.loop(time));
     }
     gridToDisplayX(gridX) {
@@ -44,6 +44,14 @@ export default class Game {
         return Math.floor((displayY - this.lowerGridRect.y) / this.cellSize);
     }
     mouseDown(e) {
+        if (!this.musicPlaying) {
+            const audioElement = document.createElement('audio');
+            audioElement.src = './res/music/loop.mp3';
+            audioElement.volume = 0.25;
+            audioElement.play();
+            audioElement.loop = true;
+            this.musicPlaying = true;
+        }
         if (e.button !== 0) {
             this.move = false;
         }

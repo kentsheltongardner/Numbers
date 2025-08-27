@@ -18,7 +18,7 @@ export default class Level {
         }
 
         this.timer = 5
-        //this.buildTopGrid(1)
+        this.buildTopGrid(1)
     }
 
     clearTopGrid() {

@@ -31,6 +31,7 @@ export default class Game {
     private gridY = 0
     private move = false
     private previousTime = 0
+    private musicPlaying = false
 
     constructor() {
         
@@ -40,8 +41,6 @@ export default class Game {
         this.canvas.addEventListener('mousemove', e => this.mouseMove(e))
         this.canvas.addEventListener('mouseup', e => this.mouseUp(e))
         this.canvas.addEventListener('contextmenu', e => e.preventDefault())
-
-        this.level.buildTopGrid(1)
 
         requestAnimationFrame(time => this.loop(time))
     }
@@ -62,6 +61,15 @@ export default class Game {
         return Math.floor((displayY - this.lowerGridRect.y) / this.cellSize)
     }
     mouseDown(e: MouseEvent): any {
+        if (!this.musicPlaying) {
+            const audioElement = document.createElement('audio') as HTMLAudioElement
+            audioElement.src = './res/music/loop.mp3'
+            audioElement.volume = 0.25
+            audioElement.play()
+            audioElement.loop = true
+            this.musicPlaying = true
+        }
+
         if (e.button !== 0) {
             this.move = false
         } else if (this.level.inBounds(this.gridX, this.gridY)) {

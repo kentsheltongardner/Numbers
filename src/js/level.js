@@ -13,7 +13,7 @@ export default class Level {
             this.bottomGrid[i] = new Array(Level.GridSize);
         }
         this.timer = 5;
-        //this.buildTopGrid(1)
+        this.buildTopGrid(1);
     }
     clearTopGrid() {
         this.clearGrid(this.topGrid);
