@@ -1,7 +1,6 @@
 import { ramp } from './utils.js'
 
 export default class Level {
-
     public static readonly GridSize = 9
     public static readonly Middle = Math.floor(Level.GridSize / 2)
 
@@ -17,7 +16,6 @@ export default class Level {
             this.topGrid[i] = new Array<boolean>(Level.GridSize)
             this.bottomGrid[i] = new Array<boolean>(Level.GridSize)
         }
-
         this.reset()
     }
 

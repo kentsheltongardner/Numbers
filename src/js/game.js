@@ -1,9 +1,9 @@
 import Level from './level.js';
 import { ramp } from './utils.js';
-const PaddingFractionCells = 1; // Fraction of cell size used as padding around and between grids
-const RenderWidthCells = Level.GridSize + PaddingFractionCells * 2; // Total width of rendering area in cells
-const RenderHeightCells = Level.GridSize * 2 + PaddingFractionCells * 4; // Total height of rendering area in cells
-const CornerRadiusFraction = 0.2; // Fraction of cell size used as corner radius for rounded rectangles
+const PaddingFractionCells = 1;
+const RenderWidthCells = Level.GridSize + PaddingFractionCells * 2;
+const RenderHeightCells = Level.GridSize * 2 + PaddingFractionCells * 4;
+const CornerRadiusFraction = 0.2;
 export default class Game {
     canvas = document.getElementById('game-canvas');
     context = this.canvas.getContext('2d');
