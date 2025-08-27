@@ -18,8 +18,14 @@ export default class Level {
             this.bottomGrid[i] = new Array<boolean>(Level.GridSize)
         }
 
-        this.timer = 5
+        this.reset()
+    }
 
+
+    reset() {
+        this.difficulty = 1
+        this.playing = false
+        this.timer = 5
         this.topGrid[Level.Middle][Level.Middle] = true
         this.lastCount = 1
     }
@@ -115,12 +121,9 @@ export default class Level {
 
     checkForLoss() {
         if (this.timer < 0) {
-            this.difficulty = 1
             this.clearTopGrid()
             this.clearBottomGrid()
-            this.buildTopGrid(this.difficulty)
-            this.timer = 5.0
-            this.playing = false
+            this.reset()
         }
     }
 }
