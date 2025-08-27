@@ -1,7 +1,0 @@
-I have a computer game idea where I try to teach mathematical concepts without invoking the symbols of mathematics. The core idea of the game is counting. There are two grids, one above the other, and the goal of the game is to get the 'number' of each grid to match the number of the other grid.
-
-The top grid is given to the player to look at, and is not interactive. It shows some number of positive cells (solid blocks), negative cells (block outlines), and empty cells. The number of positive cells minus negative cells is the number for the top grid.
-
-The bottom grid is interactive. The player uses a rectangular select to toggle cells into positive or empty states. For example, if the number of on cells in the top grid is 15, the player could quickly draw out a 5x3 block of positive cells in the lower grid and equal the number of the top grid. There is a finite amount of time for the player to solve the puzzle, and only one chance to submit. Upon beating a level a new one appears, and the player beats as many as he or she can as the levels increase in complexity.
-
-Anyway, what are your thoughts, and what avenues for exploration are there? I want lots of feedback and brainstorming.
