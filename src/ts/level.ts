@@ -3,6 +3,7 @@ import { ramp } from './utils.js'
 export default class Level {
 
     public static readonly GridSize = 9
+    public static readonly Middle = Math.floor(Level.GridSize / 2)
 
     public topGrid = new Array<boolean[]>(Level.GridSize)
     public bottomGrid = new Array<boolean[]>(Level.GridSize)
@@ -18,7 +19,9 @@ export default class Level {
         }
 
         this.timer = 5
-        this.buildTopGrid(1)
+
+        this.topGrid[Level.Middle][Level.Middle] = true
+        this.lastCount = 1
     }
 
     clearTopGrid() {

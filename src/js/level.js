@@ -1,6 +1,7 @@
 import { ramp } from './utils.js';
 export default class Level {
     static GridSize = 9;
+    static Middle = Math.floor(Level.GridSize / 2);
     topGrid = new Array(Level.GridSize);
     bottomGrid = new Array(Level.GridSize);
     difficulty = 1;
@@ -13,7 +14,8 @@ export default class Level {
             this.bottomGrid[i] = new Array(Level.GridSize);
         }
         this.timer = 5;
-        this.buildTopGrid(1);
+        this.topGrid[Level.Middle][Level.Middle] = true;
+        this.lastCount = 1;
     }
     clearTopGrid() {
         this.clearGrid(this.topGrid);
