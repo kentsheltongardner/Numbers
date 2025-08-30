@@ -1,11 +1,12 @@
+import Cell from './cell.js'
 import { ramp } from './utils.js'
 
 export default class Level {
     public static readonly GridSize = 9
     public static readonly Middle = Math.floor(Level.GridSize / 2)
 
-    public topGrid = new Array<boolean[]>(Level.GridSize)
-    public bottomGrid = new Array<boolean[]>(Level.GridSize)
+    public topGrid = new Array<Cell[]>(Level.GridSize)
+    public bottomGrid = new Array<Cell[]>(Level.GridSize)
     public difficulty = 1
     public lastCount = 0
     public timer = 0
@@ -13,8 +14,12 @@ export default class Level {
 
     constructor() {
         for (let i = 0; i < Level.GridSize; i++) {
-            this.topGrid[i] = new Array<boolean>(Level.GridSize)
-            this.bottomGrid[i] = new Array<boolean>(Level.GridSize)
+            this.topGrid[i] = new Array<Cell>(Level.GridSize)
+            this.bottomGrid[i] = new Array<Cell>(Level.GridSize)
+            for (let j = 0; j < Level.GridSize; j++) {
+                this.topGrid[i][j] = new Cell(false, 0)
+                this.bottomGrid[i][j] = new Cell(false, 0)
+            }
         }
         this.reset()
     }
@@ -24,7 +29,9 @@ export default class Level {
         this.difficulty = 1
         this.playing = false
         this.timer = 5
-        this.topGrid[Level.Middle][Level.Middle] = true
+        const middleCell = this.topGrid[Level.Middle][Level.Middle]
+        middleCell.on = true
+        middleCell.power = 1
         this.lastCount = 1
     }
 
@@ -35,20 +42,21 @@ export default class Level {
         this.clearGrid(this.bottomGrid)
     }
 
-    clearGrid(grid: boolean[][]) {
+    clearGrid(grid: Cell[][]) {
         for (let i = 0; i < Level.GridSize; i++) {
             for (let j = 0; j < Level.GridSize; j++) {
-                grid[i][j] = false
+                grid[i][j].on = false
+                grid[i][j].power = 0
             }
         }
     }
 
-    toggleRect(x: number, y: number, w: number, h: number, grid: boolean[][]): number {
+    toggleRect(x: number, y: number, w: number, h: number, grid: Cell[][]): number {
         let count = 0
         for (let i = x; i < x + w; i++) {
             for (let j = y; j < y + h; j++) {
-                grid[i][j] = !grid[i][j]
-                count += grid[i][j] ? 1 : -1
+                grid[i][j].on = !grid[i][j].on
+                count += grid[i][j].on ? 1 : -1
             }
         }
         return count
@@ -59,7 +67,7 @@ export default class Level {
     }
 
     buildTopGrid(difficulty: number) {
-        const rampedDifficulty = ramp(difficulty, 20, 20)
+        const rampedDifficulty = ramp(difficulty, 25, 50)
         const maxCount = 1 + Math.floor(rampedDifficulty)
         const maxLength = Math.ceil(rampedDifficulty / 2)
 
@@ -78,29 +86,51 @@ export default class Level {
 
 
 
-    count(grid: boolean[][]) {
+    count(grid: Cell[][]) {
         let count = 0
         for (let i = 0; i < Level.GridSize; i++) {
             for (let j = 0; j < Level.GridSize; j++) {
-                count += grid[i][j] ? 1 : -1
+                count += grid[i][j].on ? 1 : -1
             }
         }
         return count
     }
+    settled(grid: Cell[][]) {
+        for (let i = 0; i < Level.GridSize; i++) {
+            for (let j = 0; j < Level.GridSize; j++) {
+                const power = grid[i][j].power
+                if (power !== 1 && power !== 0) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+
 
     equal() {
         return this.count(this.topGrid) === this.count(this.bottomGrid)
+            && this.settled(this.topGrid)
+            && this.settled(this.bottomGrid)
     }
 
     nextLevel() {
         this.clearGrid(this.topGrid)
         this.difficulty++
         this.buildTopGrid(this.difficulty)
-        this.timer += 5.0
+        this.timer += 6.0
     }
 
     update(deltaTime: number) {
         if (!this.playing) return
+
+        for (let i = 0; i < Level.GridSize; i++) {
+            for (let j = 0; j < Level.GridSize; j++) {
+                this.topGrid[i][j].update(deltaTime)
+                this.bottomGrid[i][j].update(deltaTime)
+            }
+        }
 
         if (this.equal()) {
             this.nextLevel()

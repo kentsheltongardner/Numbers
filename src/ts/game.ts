@@ -1,3 +1,4 @@
+import Cell from './cell.js'
 import Level from './level.js'
 import { ramp } from './utils.js'
 
@@ -151,18 +152,20 @@ export default class Game {
     }
 
 
-    renderGridCells(grid: boolean[][], rect: Rect) {
-        this.context.beginPath()
+    renderGridCells(grid: Cell[][], rect: Rect) {
         for (let i = 0; i < Level.GridSize; i++) {
             for (let j = 0; j < Level.GridSize; j++) {
-                if (!grid[i][j]) continue
+                if (!grid[i][j].on) continue
 
                 let x = rect.x + i * this.cellSize
                 let y = rect.y + j * this.cellSize
+                
+                this.context.globalAlpha = grid[i][j].power
+                this.context.beginPath()
                 this.context.roundRect(x + 1, y + 1, this.cellSize - 2, this.cellSize - 2, this.cornerRadius)
+                this.context.fill()
             }
         }
-        this.context.fill()
     }
 
     renderLowerGridCells() {
@@ -189,7 +192,7 @@ export default class Game {
 
         this.context.beginPath()
         this.context.roundRect(x, y, w, h, this.cornerRadius)
-        this.context.globalAlpha = 0.5
+        this.context.globalAlpha = 0.125
         this.context.fill()
         this.context.globalAlpha = 1
         this.context.stroke()
@@ -273,7 +276,7 @@ export default class Game {
             : window.innerWidth / RenderWidthCells
 
         this.cornerRadius = this.cellSize * CornerRadiusFraction
-        
+
         this.gridSize = Level.GridSize * this.cellSize
 
         let w = this.cellSize * RenderWidthCells

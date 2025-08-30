@@ -119,17 +119,18 @@ export default class Game {
         this.renderSelection();
     }
     renderGridCells(grid, rect) {
-        this.context.beginPath();
         for (let i = 0; i < Level.GridSize; i++) {
             for (let j = 0; j < Level.GridSize; j++) {
-                if (!grid[i][j])
+                if (!grid[i][j].on)
                     continue;
                 let x = rect.x + i * this.cellSize;
                 let y = rect.y + j * this.cellSize;
+                this.context.globalAlpha = grid[i][j].power;
+                this.context.beginPath();
                 this.context.roundRect(x + 1, y + 1, this.cellSize - 2, this.cellSize - 2, this.cornerRadius);
+                this.context.fill();
             }
         }
-        this.context.fill();
     }
     renderLowerGridCells() {
         this.renderGridCells(this.level.bottomGrid, this.lowerGridRect);
@@ -151,7 +152,7 @@ export default class Game {
         const h = selectionRect.h * this.cellSize;
         this.context.beginPath();
         this.context.roundRect(x, y, w, h, this.cornerRadius);
-        this.context.globalAlpha = 0.5;
+        this.context.globalAlpha = 0.125;
         this.context.fill();
         this.context.globalAlpha = 1;
         this.context.stroke();
